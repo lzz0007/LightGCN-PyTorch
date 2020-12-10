@@ -13,6 +13,7 @@ from enum import Enum
 from parse import parse_args
 import multiprocessing
 import pickle
+import torch.nn.functional as F
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 args = parse_args()
@@ -51,7 +52,8 @@ if args.pretrain != 0:
         item_emb = pickle.load(f)
     with open('../data/amazon-video/init_emb_title_user.pickle', 'rb') as f:
         user_emb = pickle.load(f)
-
+    user_emb = F.normalize(user_emb, p=2, dim=1)
+    item_emb = F.normalize(item_emb, p=2, dim=1)
     config['user_emb'] = user_emb
     config['item_emb'] = item_emb
 
