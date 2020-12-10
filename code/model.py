@@ -109,8 +109,8 @@ class LightGCN(BasicModel):
             nn.init.normal_(self.embedding_item.weight, std=0.1)
             world.cprint('use NORMAL distribution initilizer')
         else:
-            self.embedding_user.weight.data.copy_(torch.from_numpy(self.config['user_emb']))
-            self.embedding_item.weight.data.copy_(torch.from_numpy(self.config['item_emb']))
+            self.embedding_user.weight.data.copy_(self.config['user_emb'])
+            self.embedding_item.weight.data.copy_(self.config['item_emb'])
             print('use pretarined data')
         self.f = nn.Sigmoid()
         self.Graph = self.dataset.getSparseGraph()

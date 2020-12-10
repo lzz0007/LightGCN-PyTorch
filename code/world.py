@@ -12,11 +12,12 @@ import torch
 from enum import Enum
 from parse import parse_args
 import multiprocessing
+import pickle
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 args = parse_args()
 
-ROOT_PATH = "/Users/gus/Desktop/light-gcn"
+ROOT_PATH = "/home/lingzi/lightgcn"
 CODE_PATH = join(ROOT_PATH, 'code')
 DATA_PATH = join(ROOT_PATH, 'data')
 BOARD_PATH = join(CODE_PATH, 'runs')
@@ -28,7 +29,7 @@ if not os.path.exists(FILE_PATH):
 
 
 config = {}
-all_dataset = ['lastfm', 'gowalla', 'yelp2018', 'amazon-book']
+all_dataset = ['lastfm', 'gowalla', 'yelp2018', 'amazon-book', 'amazon-video']
 all_models  = ['mf', 'lgn']
 # config['batch_size'] = 4096
 config['bpr_batch_size'] = args.bpr_batch
@@ -44,6 +45,15 @@ config['decay'] = args.decay
 config['pretrain'] = args.pretrain
 config['A_split'] = False
 config['bigdata'] = False
+
+if args.pretrain != 0:
+    with open('../data/amazon-video/init_emb_title_item.pickle', 'rb') as f:
+        item_emb = pickle.load(f)
+    with open('../data/amazon-video/init_emb_title_user.pickle', 'rb') as f:
+        user_emb = pickle.load(f)
+
+    config['user_emb'] = user_emb
+    config['item_emb'] = item_emb
 
 GPU = torch.cuda.is_available()
 device = torch.device('cuda' if GPU else "cpu")

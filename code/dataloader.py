@@ -240,6 +240,7 @@ class Loader(BasicDataset):
 
         with open(train_file) as f:
             for l in f.readlines():
+                l = l.rstrip()
                 if len(l) > 0:
                     l = l.strip('\n').split(' ')
                     items = [int(i) for i in l[1:]]
@@ -256,6 +257,7 @@ class Loader(BasicDataset):
 
         with open(test_file) as f:
             for l in f.readlines():
+                l = l.rstrip()
                 if len(l) > 0:
                     l = l.strip('\n').split(' ')
                     items = [int(i) for i in l[1:]]
